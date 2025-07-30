@@ -1,11 +1,7 @@
 # Sudoku
-Résoudre des sudokus avec Python.
-Le programme python permet de résoudre des sudokus.
-Le programme est encore en cours de développement: il ne permet pas de résoudre toute les grilles.
-Néanmoins, il arrive à résoudre entièrement la majorité des grilles de niveau facile et moyen, 
-partiellement ceux en difficile.
-L'algorithme n'utilise pas du back-tracking, mais essaye de reproduire plus une manière
-dans les humains pourraient résoudres le sudoku.
+Ce programme Python a été conçu pour résoudre des grilles de sudoku. Bien qu'il soit toujours en développement et ne puisse pas encore résoudre toutes les grilles, il est capable de trouver la solution complète pour la majorité des sudokus de niveau facile et moyen.
+
+L'approche adoptée pour cet algorithme est particuliaire : plutôt que d'utiliser le "backtracking", le programme tente de reproduire les méthodes de résolution humaines.
 
 Entrée :
 ![Capture d’écran du 2024-04-25 11-25-06](https://github.com/MSengler/Sudoku/assets/144023830/791a5c95-7144-4bc2-a8c5-f98a6c0fab19)
