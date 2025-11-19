@@ -1,5 +1,5 @@
 # Sudoku
-Ce programme Python a été conçu pour résoudre des grilles de sudoku. Bien qu'il soit toujours en développement et ne puisse pas encore résoudre toutes les grilles, il est capable de trouver la solution complète pour la majorité des sudokus de niveau facile et moyen.
+Ce programme Python a été conçu pour résoudre des grilles de sudoku. Bien qu'il soit toujours en développement et ne puisse pas encore résoudre toutes les grilles, il est capable de trouver la solution complète pour la majorité des sudokus.
 
 L'approche adoptée pour cet algorithme est particuliaire : plutôt que d'utiliser le "backtracking", le programme tente de reproduire les méthodes de résolution humaines.
 
