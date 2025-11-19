@@ -1,57 +1,85 @@
 ﻿import numpy as np
 
-G=np.array([
-[9,0,3,0,0,5,0,0,0],[7,2,0,0,0,0,0,6,0],[0,0,0,7,6,0,0,0,0],\
-[3,0,2,0,0,7,0,0,4],[6,0,0,0,4,0,0,0,5],[8,0,0,5,0,0,7,0,2],\
-[0,0,0,0,7,4,0,0,0],[0,7,0,0,0,0,0,9,1],[0,0,0,2,0,0,5,0,8]])
+G = np.array([
+    [0,6,0,0,0,0,2,0,5],\
+    [4,0,0,9,2,1,0,0,0],\
+    [0,7,0,0,0,8,0,0,1],\
+    [0,0,0,0,0,5,0,0,9],\
+    [6,4,0,0,0,0,0,7,3],\
+    [1,0,0,4,0,0,0,0,0],\
+    [3,0,0,7,0,0,0,6,0],\
+    [0,0,0,1,4,6,0,0,2],\
+    [2,0,6,0,0,0,0,1,0]])
 
-def carre(G,i,j):
-    icoin=3*(i//3)
-    jcoin=3*(j//3)
-    chiffre=[]
-    for u in range(icoin,icoin+3):
-        for v in range(jcoin,jcoin+3):
-            if G[u][v]!=0:
-                chiffre.append(G[u,v])
+M = np.array([\
+    [2,0,0,0,9,0,3,0,0],\
+    [0,1,9,0,8,0,0,7,4],\
+    [0,0,8,4,0,0,6,2,0],\
+    [5,9,0,6,2,1,0,0,0],\
+    [0,2,7,0,0,0,1,6,0],\
+    [0,0,0,5,7,4,0,9,3],\
+    [0,8,5,0,0,9,7,0,0],\
+    [9,3,0,0,5,0,8,4,0],\
+    [0,0,2,0,6,0,0,0,1]])
+
+G2 = np.array([\
+    [0,3,0,0,0,8,0,0,0],\
+    [9,0,0,2,0,3,0,0,1],\
+    [4,0,1,0,0,9,6,0,0],\
+    [0,5,0,0,0,0,4,3,0],\
+    [0,0,0,0,0,0,0,0,0],\
+    [0,6,9,0,0,0,0,2,0],\
+    [0,0,8,6,0,0,7,0,2],\
+    [2,0,0,9,0,4,0,0,8],\
+    [0,0,0,7,0,0,0,1,0]])
+
+def carre(G, i, j):
+    icoin = 3*(i//3)
+    jcoin = 3*(j//3)
+    chiffre = set()
+    for u in range(icoin, icoin+3):
+        for v in range(jcoin, jcoin+3):
+            if G[u,v]!=0:
+                chiffre.add(G[u,v])
     return chiffre
 #print(carre(G,4,5))
 
-def ligne(G,i):
-    chiffre=[]
+def ligne(G, i):
+    chiffre = set()
     for u in range(9):
-        if G[i][u]!=0:
-                chiffre.append(G[i,u])
+        if G[i,u] != 0:
+            chiffre.add(G[i,u])
     return chiffre
 #print(ligne(G,0))
 
-def colonne(G,i):
-    chiffre=[]
+def colonne(G, j):
+    chiffre = set()
     for u in range(9):
-        if G[u][i]!=0:
-                chiffre.append(G[u,i])
+        if G[u,j] != 0:
+            chiffre.add(G[u,j])
     return chiffre
 #print(colonne(G,0))
 
-def ligne_complete(G,i):
+def ligne_complete(G, i):
     for u in range(9):
-        if G[i][u]==0:
+        if G[i,u] == 0:
             return False
     return True
 #print(ligne_complete(G,0))
 
-def colonne_complete(G,i):
+def colonne_complete(G, j):
     for u in range(9):
-        if G[u][i]==0:
+        if G[u,j] == 0:
             return False
     return True
 #print(colonne_complete(G,0))
 
-def carre_complet(G,i,j):
-    icoin=3*(i//3)
-    jcoin=3*(j//3)
-    for u in range(icoin,icoin+3):
-        for v in range(jcoin,jcoin+3):
-            if G[u][v]==0:
+def carre_complet(G, i, j):
+    icoin = 3*(i//3)
+    jcoin = 3*(j//3)
+    for u in range(icoin, icoin+3):
+        for v in range(jcoin, jcoin+3):
+            if G[u,v] == 0:
                 return False
     return True
 #print(carre_complet(G,0,0))
@@ -59,196 +87,112 @@ def carre_complet(G,i,j):
 def finie(G):
     for i in range(9):
         for j in range(9):
-            if G[i][j]==0:
+            if G[i,j] == 0:
                 return False
     return True
 #print(finie(G))
 
-def conflit(G,i,j):
-    pok=[]
-    l=ligne(G,i)
-    co=colonne(G,j)
-    ca=carre(G,i,j)
-    for i in range(len(l)):
-        if l[i]not in pok:
-            pok.append(l[i])
-    for i in range(len(co)):
-        if co[i]not in pok:
-            pok.append(co[i])
-    for i in range(len(ca)):
-        if ca[i]not in pok:
-            pok.append(ca[i])
-    return pok
-#print(conflit(G,4,2))
+def nb_possibles(G, i, j):
+    chiffres_utilises = ligne(G, i).union(colonne(G, j)).union(carre(G, i, j))
+    return set(range(1, 10)) - chiffres_utilises, chiffres_utilises
 
-def chiffres_OK(G,i,j):
-    ok=[]
-    if G[i,j]!=0:
-        ok.append(G[i,j])
-        return ok
-    conflits=conflit(G,i,j)
-    for k in range(1,10) :
-        if k not in conflits :
-            ok.append(k)
-    return ok
-#print(chiffres_OK(G,4,2))
+def eliminer_possibles(G, i, j):
+    possibles, _ = nb_possibles(G, i, j)
 
-def nb_possible(G,i,j):
-    return len(chiffres_OK(G,i,j))
-#print(nb_possible(G,4,2))
+    all_possible_carre = set()
+    icoin = 3*(i//3)
+    jcoin = 3*(j//3)
+    for u in range(icoin, icoin+3):
+        for v in range(jcoin, jcoin+3):
+            #print(f"Examining cell ({u},{v}) with value {G[u,v]}")
+            if G[u,v] == 0  and (u != i or v != j):
+                all_possible_carre = all_possible_carre.union(nb_possibles(G, u, v)[0])
+                #print(all_possible_carre)
 
-def occurrence_ligne(G,i,k):
-    occ=0
-    for v in range(0,9):
-        if k in chiffres_OK(G,i,v):
-            occ+=1
-    return occ
+    all_possible_ligne = set()
+    for v in range(9):
+        if G[i,v] == 0 and v != j:
+            all_possible_ligne = all_possible_ligne.union(nb_possibles(G, i, v)[0])
 
-def occurrence_colonne(G,j,k):
-    occ=0
-    for u in range(0,9):
-        if k in chiffres_OK(G,u,j):
-            occ+=1
-    return occ
+    all_possible_colonne = set()
+    for u in range(9):
+        if G[u,j] == 0 and u != i:
+            all_possible_colonne = all_possible_colonne.union(nb_possibles(G, u, j)[0])
 
-def occurrence_carre(G,i,j,k):
-    icoin=3*(i//3)
-    jcoin=3*(j//3)
-    occ=0
-    for u in range(icoin,icoin+3):
-        for v in range(jcoin,jcoin+3):
-            if k in chiffres_OK(G,u,v):
-                occ+=1
-    return occ
+    carre_utilises = possibles - all_possible_carre
+    ligne_utilises = possibles - all_possible_ligne
+    colonne_utilises = possibles - all_possible_colonne
 
+    return carre_utilises, ligne_utilises, colonne_utilises
 
-def meme_nombres_ligne(G):
-    for i in range(0,9):
-        for k in range(0,3):
-            L=[]
-            for j in range(3*k,3*(k+1)):
-                L.append(chiffres_OK(G,i,j))
-            if L[0]==L[1] and len(L[0])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for j in range(0,9): 
-                    if j!=3*k and j!=3*k+1:
-                        if L[0][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-            if L[0]==L[2] and len(L[0])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for j in range(0,9): 
-                    if j!=3*k and j!=3*k+2:
-                        if L[0][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-            if L[1]==L[2] and len(L[1])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for j in range(0,9): 
-                    if j!=3*k+1 and j!=3*k+2:
-                        if L[1][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[1][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
+def recherche_double(G, i, j):
+    possibles, _ = nb_possibles(G, i, j)
+    autres_possibles = {}
+    for u in range(9):
+        if G[i,u] == 0 and u != j:
+            possibles_, _ = nb_possibles(G, i, u)
+            if tuple(possibles_) in autres_possibles and len(possibles_) == 2:
+                if autres_possibles[tuple(possibles_)]//3 == u//3 and set(range(1, 10)) - carre(G, i, u) == possibles_:
+                    #print(f"Double trouvé en ligne {i} colonne {u} : {possibles_}")
+                    possibles = possibles - possibles_
 
+            autres_possibles[tuple(possibles_)] = u
 
-def meme_nombres_colonne(G):
-    for j in range(0,9):
-        for k in range(0,3):
-            L=[]
-            for i in range(3*k,3*(k+1)):
-                L.append(chiffres_OK(G,i,j))
-            if L[0]==L[1] and len(L[0])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for i in range(0,9): 
-                    if i!=3*k and i!=3*k+1:
-                        if L[0][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-            if L[0]==L[2] and len(L[0])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for i in range(0,9): 
-                    if i!=3*k and i!=3*k+2:
-                        if L[0][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-            if L[1]==L[2] and len(L[1])==2 and occurrence_carre(G,i,j,L[0][0])==2 and occurrence_carre(G,i,j,L[0][1])==2:
-                for i in range(0,9): 
-                    if i!=3*k+1 and i!=3*k+2:
-                        if L[1][0] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[1][0]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
-                        if L[0][1] in chiffres_OK(G,i,j) and len(chiffres_OK(G,i,j))==2:
-                            if chiffres_OK(G,i,j)[0]==L[0][1]:
-                                G[i,j]=chiffres_OK(G,i,j)[1]
-                            else:
-                                G[i,j]=chiffres_OK(G,i,j)[0]
+    for v in range(9):
+        if G[v,j] == 0 and v != i:
+            possibles_, _ = nb_possibles(G, v, j)
+            if tuple(possibles_) in autres_possibles and len(possibles_) == 2:
+                if autres_possibles[tuple(possibles_)]//3 == v//3 and set(range(1, 10)) - colonne(G, v) == possibles_:
+                    #print(f"Double trouvé en colonne {j} ligne {v} : {possibles_}")
+                    possibles = possibles - possibles_
 
+            autres_possibles[tuple(possibles_)] = v
+    return possibles
 
 def un_tour(G):
-    changement=False
-    for i in range(0,9):
-        for j in range(0,9):
-            if G[i,j]==0:
-                if nb_possible(G,i,j)==1:
-                    G[i,j]=chiffres_OK(G,i,j)[0]
-                    changement=True
-                    break
-                for k in chiffres_OK(G,i,j):
-                    if occurrence_carre(G,i,j,k)==1:
-                        G[i,j]=k
-                        changement=True
-                        break
-                    if occurrence_ligne(G,i,k)==1:
-                        G[i,j]=k
-                        changement=True
-                        break
-                    if occurrence_colonne(G,j,k)==1:
-                        G[i,j]=k
-                        changement=True
-                        break              
-    return changement
-#print(un_tour(G))
+    modifie = False
+    for i in range(9):
+        for j in range(9):
+            if G[i,j] == 0:
+                possibles, _ = nb_possibles(G, i, j)
+                if len(possibles) == 1:
+                    G[i,j] = possibles.pop()
+                    modifie = True
+                else:
+                    carre_utilises, ligne_utilises, colonne_utilises = eliminer_possibles(G, i, j)
+                    #print(f"Cellule ({i},{j}) : possibles = {possibles}, carre_utilises = {carre_utilises}, ligne_utilises = {ligne_utilises}, colonne_utilises = {colonne_utilises}")
+                    if len(carre_utilises) == 1:
+                        G[i,j] = carre_utilises.pop()
+                        modifie = True
+                    elif len(ligne_utilises) == 1:
+                        G[i,j] = ligne_utilises.pop()
+                        modifie = True
+                    elif len(colonne_utilises) == 1:
+                        G[i,j] = colonne_utilises.pop()
+                        modifie = True
+
+                    elif len(recherche_double(G, i, j))==1:
+                        G[i,j] = recherche_double(G, i, j).pop()
+                        modifie = True
+
+    return modifie
+
+def resoudre(G):
+    while not finie(G):
+        if not un_tour(G):
+            break
+    return finie(G)
+
+"""resoudre(G)
+print(G)
+
+resoudre(M)
+print(M)"""
+
+resoudre(G2)
+print(G2)
 
 
-def complete(G):
-    acc=0
-    while un_tour(G)!=False or acc>10:
-        un_tour(G)
-        acc+=1
-    return G
-print(complete(G))
 
 
 
