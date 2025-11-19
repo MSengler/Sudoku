@@ -142,7 +142,7 @@ def recherche_double(G, i, j):
         if G[v,j] == 0 and v != i:
             possibles_, _ = nb_possibles(G, v, j)
             if tuple(possibles_) in autres_possibles and len(possibles_) == 2:
-                if autres_possibles[tuple(possibles_)]//3 == v//3 and set(range(1, 10)) - colonne(G, v) == possibles_:
+                if autres_possibles[tuple(possibles_)]//3 == v//3 and set(range(1, 10)) - carre(G, v, j) == possibles_:
                     #print(f"Double trouvé en colonne {j} ligne {v} : {possibles_}")
                     possibles = possibles - possibles_
 
@@ -183,14 +183,15 @@ def resoudre(G):
             break
     return finie(G)
 
-"""resoudre(G)
+resoudre(G)
 print(G)
 
 resoudre(M)
-print(M)"""
+print(M)
 
 resoudre(G2)
 print(G2)
+
 
 
 
